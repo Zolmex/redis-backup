@@ -15,6 +15,6 @@ An application that automatically creates backups of Redis 'dump.rdb' files.
   "RedisFolder": ""
 }
 ```
-* TimeLimit: Time interval for a backup to be made.
+* TimeLimit: Time interval (in minutes) for a backup to be made.
 * DestFolder: Name of the folder containing the backups made.
 * RedisFolder: Folder containing the redis server.
