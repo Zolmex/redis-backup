@@ -35,27 +35,24 @@ namespace RedisBackup
 
         private static void LoopWatch()
         {
-            var sw = Stopwatch.StartNew();
+            var sleepTime = Settings.TimeLimit * 60000;
             while (true)
             {
-                if (sw.Elapsed.Minutes >= Settings.TimeLimit)
-                {
-                    if (!Directory.Exists(Settings.RedisFolder))
-                        throw new DirectoryNotFoundException(Settings.RedisFolder);
-                    if (!File.Exists(Settings.RedisFolder + "/dump.rdb"))
-                        throw new FileNotFoundException("dump.rdb doesn't exist");
+                if (!Directory.Exists(Settings.RedisFolder))
+                    throw new DirectoryNotFoundException(Settings.RedisFolder);
+                if (!File.Exists(Settings.RedisFolder + "/dump.rdb"))
+                    throw new FileNotFoundException("dump.rdb doesn't exist");
 
-                    var fileName = $"dump {DateTime.Now.ToString().ToSafe()}.rdb";
-                    var finalDir = Settings.DestFolder + $"/{DateTime.Today.ToShortDateString().ToSafe()}";
-                    if (!Directory.Exists(finalDir))
-                        Directory.CreateDirectory(finalDir);
+                var fileName = $"dump {DateTime.Now.ToString().ToSafe()}.rdb";
+                var finalDir = Settings.DestFolder + $"/{DateTime.Today.ToShortDateString().ToSafe()}";
+                if (!Directory.Exists(finalDir))
+                    Directory.CreateDirectory(finalDir);
 
-                    var data = File.ReadAllBytes(Settings.RedisFolder + "/dump.rdb");
-                    File.WriteAllBytes($"{finalDir}/{fileName}", data);
-                    Log.Debug($"Backup created at {finalDir}/{fileName}");
+                var data = File.ReadAllBytes(Settings.RedisFolder + "/dump.rdb");
+                File.WriteAllBytes($"{finalDir}/{fileName}", data);
+                Log.Debug($"Backup created at '{finalDir}/{fileName}'");
 
-                    sw.Restart();
-                }
+                Thread.Sleep(sleepTime);
             }
         }
 
