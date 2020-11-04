@@ -12,6 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="AsyncLogger">
+      <HintPath>AsyncLogger.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

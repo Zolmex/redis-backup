@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LoggingEngine;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -8,11 +9,13 @@ namespace RedisBackup
 {
     public class Program
     {
+        public static readonly Logger Log = new Logger(typeof(Program));
         public static readonly string ExecPath = Directory.GetCurrentDirectory();
         public static readonly Settings Settings = Settings.Load("settings.json");
 
         public static void Main(string[] args)
         {
+            Console.Title = "Redis Backup";
             AppDomain.CurrentDomain.ProcessExit += Goodbye;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
@@ -25,7 +28,7 @@ namespace RedisBackup
             if (!Directory.Exists(dest))
                 Directory.CreateDirectory(dest);
 
-            Console.WriteLine("Application successfully started.");
+            Log.Info("Application successfully started.");
 
             LoopWatch();
         }
@@ -49,7 +52,7 @@ namespace RedisBackup
 
                     var data = File.ReadAllBytes(Settings.RedisFolder + "/dump.rdb");
                     File.WriteAllBytes($"{finalDir}/{fileName}", data);
-                    Console.WriteLine($"Backup created at {DateTime.Now.TimeOfDay}");
+                    Log.Debug($"Backup created at {finalDir}/{fileName}");
 
                     sw.Restart();
                 }
@@ -58,7 +61,7 @@ namespace RedisBackup
 
         private static void Goodbye(object sender, EventArgs args)
         {
-            Console.WriteLine("See you later.");
+            Log.Info("See you later.");
             Thread.Sleep(300);
         }
     }
