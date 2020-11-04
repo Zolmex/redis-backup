@@ -5,6 +5,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>RedisBackup</RootNamespace>
     <AssemblyName>RedisBackup</AssemblyName>
+    <Version>1.1.1</Version>
+    <Authors>Zolmex</Authors>
+    <Company>Zolmex</Company>
   </PropertyGroup>
 
   <ItemGroup>
